@@ -3601,10 +3601,10 @@ static int igc_change_mtu(struct net_device *netdev, int new_mtu)
 static void igc_get_stats64(struct net_device *netdev, struct rtnl_link_stats64 *net_stats)
 {
 	struct igc_adapter *adapter = netdev_priv(netdev);
-
+	
 	if (!test_bit(__IGC_RESETTING, &adapter->state))
 		igc_update_stats(adapter);
-
+	
 	net_stats->rx_bytes = adapter->stats64.rx_bytes;
 	net_stats->rx_packets = adapter->stats64.rx_packets;
 	net_stats->tx_bytes = adapter->stats64.tx_bytes;
@@ -4509,17 +4509,17 @@ static int igc_ioctl(struct net_device *netdev, struct ifreq *ifr, int cmd)
 }
 
 static const struct net_device_ops igc_netdev_ops = {
-	.ndo_open		     = igc_open,
-	.ndo_stop		     = igc_close,
-	.ndo_start_xmit		 = igc_xmit_frame,
-	.ndo_set_rx_mode	 = igc_set_rx_mode,
+	.ndo_open            = igc_open,
+	.ndo_stop            = igc_close,
+	.ndo_start_xmit      = igc_xmit_frame,
+	.ndo_set_rx_mode     = igc_set_rx_mode,
 	.ndo_set_mac_address = igc_set_mac,
-	.ndo_change_mtu		 = igc_change_mtu,
-	.ndo_get_stats64	 = igc_get_stats64,
-	.ndo_fix_features	 = igc_fix_features,
-	.ndo_set_features	 = igc_set_features,
+	.ndo_change_mtu      = igc_change_mtu,
+	.ndo_get_stats64     = igc_get_stats64,
+	.ndo_fix_features    = igc_fix_features,
+	.ndo_set_features    = igc_set_features,
 	.ndo_features_check	 = igc_features_check,
-	.ndo_do_ioctl		 = igc_ioctl,
+	.ndo_do_ioctl        = igc_ioctl,
 };
 
 /* PCIe configuration access */
