@@ -9,9 +9,9 @@ Download the original kernel source using:
 sudo apt source linux-image-5.4.0-7642-generic
 ```
 
-## Installation
+## Install
 
-Install a dkms-based module from source with:
+Install a dkms-based module for the igc driver from source with:
 
 ```
 git clone https://github.com/jksinton/intel-igc.git
@@ -24,7 +24,7 @@ sudo modprobe igc
 ```
 
 ## Uninstall
-Revert to the built in igc driver of the kernel
+Uninstall the dkms module and revert to the built-in igc driver of the kernel with:
 ```
 sudo ./uninstall.sh
 sudo rmmod igc
