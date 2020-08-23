@@ -3598,15 +3598,32 @@ static int igc_change_mtu(struct net_device *netdev, int new_mtu)
  * Returns the address of the device statistics structure.
  * The statistics are updated here and also from the timer callback.
  */
-static struct net_device_stats *igc_get_stats(struct net_device *netdev)
+static void igc_get_stats64(struct net_device *netdev, struct rtnl_link_stats64 *net_stats)
 {
 	struct igc_adapter *adapter = netdev_priv(netdev);
 
 	if (!test_bit(__IGC_RESETTING, &adapter->state))
 		igc_update_stats(adapter);
 
-	/* only return the current stats */
-	return &netdev->stats;
+	net_stats->rx_bytes = adapter->stats64.rx_bytes;
+	net_stats->rx_packets = adapter->stats64.rx_packets;
+	net_stats->tx_bytes = adapter->stats64.tx_bytes;
+	net_stats->tx_packets = adapter->stats64.tx_packets;
+	net_stats->rx_fifo_errors = adapter->stats64.rx_fifo_errors;
+	
+	net_stats->multicast = adapter->stats64.multicast;
+	net_stats->collisions = adapter->stats64.collisions;
+	
+	net_stats->rx_errors = adapter->stats64.rx_errors;
+	net_stats->rx_length_errors = adapter->stats64.rx_length_errors;
+	net_stats->rx_crc_errors = adapter->stats64.rx_crc_errors;
+	net_stats->rx_frame_errors = adapter->stats64.rx_frame_errors;
+	net_stats->rx_missed_errors = adapter->stats64.rx_missed_errors;
+	
+	net_stats->tx_errors = adapter->stats64.tx_errors;
+	net_stats->tx_aborted_errors = adapter->stats64.tx_aborted_errors;
+	net_stats->tx_window_errors = adapter->stats64.tx_window_errors;
+	net_stats->tx_carrier_errors = adapter->stats64.tx_carrier_errors;
 }
 
 static netdev_features_t igc_fix_features(struct net_device *netdev,
@@ -4492,17 +4509,17 @@ static int igc_ioctl(struct net_device *netdev, struct ifreq *ifr, int cmd)
 }
 
 static const struct net_device_ops igc_netdev_ops = {
-	.ndo_open		= igc_open,
-	.ndo_stop		= igc_close,
-	.ndo_start_xmit		= igc_xmit_frame,
-	.ndo_set_rx_mode	= igc_set_rx_mode,
-	.ndo_set_mac_address	= igc_set_mac,
-	.ndo_change_mtu		= igc_change_mtu,
-	.ndo_get_stats		= igc_get_stats,
-	.ndo_fix_features	= igc_fix_features,
-	.ndo_set_features	= igc_set_features,
-	.ndo_features_check	= igc_features_check,
-	.ndo_do_ioctl		= igc_ioctl,
+	.ndo_open		     = igc_open,
+	.ndo_stop		     = igc_close,
+	.ndo_start_xmit		 = igc_xmit_frame,
+	.ndo_set_rx_mode	 = igc_set_rx_mode,
+	.ndo_set_mac_address = igc_set_mac,
+	.ndo_change_mtu		 = igc_change_mtu,
+	.ndo_get_stats64	 = igc_get_stats64,
+	.ndo_fix_features	 = igc_fix_features,
+	.ndo_set_features	 = igc_set_features,
+	.ndo_features_check	 = igc_features_check,
+	.ndo_do_ioctl		 = igc_ioctl,
 };
 
 /* PCIe configuration access */
